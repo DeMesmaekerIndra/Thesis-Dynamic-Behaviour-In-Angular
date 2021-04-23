@@ -7,8 +7,7 @@
   },
   "files": [
     "src/main.ts",
-    "src/polyfills.ts",
-    "src/app/ExternalModules/external.module.ts"
+    "src/polyfills.ts"
   ],
   "include": [
     "src/**/*.d.ts"

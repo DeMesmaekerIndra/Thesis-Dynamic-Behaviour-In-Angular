@@ -7,6 +7,6 @@ import { ExternalComponent } from './externalComponent.component';
     imports: [
         CommonModule
     ],
-    entryComponents: [ExternalComponent]
+    declarations: [ExternalComponent]
 })
 export class ExternalModule { }

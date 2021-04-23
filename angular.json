@@ -19,7 +19,6 @@
             "polyfills": "src/polyfills.ts",
             "tsConfig": "tsconfig.app.json",
             "aot": true,
-            "lazyModules": ["src/app/ExternalModules/external.module"],
             "assets": [
               "src/favicon.ico",
               "src/assets"
@@ -118,5 +117,5 @@
       }
     }
   },
-  "defaultProject": "TestDynamicImport",
+  "defaultProject": "TestDynamicImport"
 }
