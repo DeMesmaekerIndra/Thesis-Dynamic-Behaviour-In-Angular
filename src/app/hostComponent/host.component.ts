@@ -1,21 +1,39 @@
-import { AfterViewInit, Compiler, Component, Injector, NgModuleFactoryLoader } from '@angular/core';
+import { AfterViewInit, Component, Injector, NgModuleFactoryLoader, OnInit, SystemJsNgModuleLoader, ViewChild, ViewContainerRef } from '@angular/core';
+import { ExternalComponent } from '../ExternalModules/externalComponent.component';
 
 @Component({
     templateUrl: './host.component.html',
+    providers: [
+        {
+            provide: NgModuleFactoryLoader,
+            useClass: SystemJsNgModuleLoader
+        }
+    ]
 })
 export class HostComponent implements AfterViewInit {
     title = 'TestDynamicImport';
+    @ViewChild('dynamiccomponent', { read: ViewContainerRef }) container: ViewContainerRef;
 
-    constructor(private injector: Injector, private loader: NgModuleFactoryLoader) {  }
+    constructor(private injector: Injector, private loader: NgModuleFactoryLoader) {
+        console.log('hi');
+    }
+
     ngAfterViewInit(): void {
-        this.loader.load('app/t.module#TModule').then((factory) => {
-            const module = factory.create(this.injector);
-            const r = module.componentFactoryResolver;
-            const cmpFactory = r.resolveComponentFactory(AComponent);
+        // Loads the file
+        this.loader.load('src/app/ExternalModules/external.module#ExternalModule')
+            // Builds and returns a mdoule factoru
+            .then((moduleFactory) => {
+                // Create an instance of the module and pass the injector to enable dependency injection.
+                const module = moduleFactory.create(this.injector);
 
-            // create a component and attach it to the view
-            const componentRef = cmpFactory.create(this.injector);
-            this.container.insert(componentRef.hostView);
-        });
+                // Retrieve a reference to the factory resolver for all components declared on that module
+                const r = module.componentFactoryResolver;
+
+                // Create a component factory for a specific Component
+                const cmpFactory = r.resolveComponentFactory(ExternalComponent);
+
+                // Create an instance of the component and attach it to the view.
+                this.container.createComponent(cmpFactory);
+            });
     }
 }
