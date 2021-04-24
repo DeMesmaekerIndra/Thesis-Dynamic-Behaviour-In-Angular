@@ -13,25 +13,24 @@ export class HostComponent implements AfterViewInit {
     constructor(private injector: Injector, private dataFetcher: ExternalDataFetcherService, private compiler: Compiler) { }
 
     ngAfterViewInit(): void {
-        // Load the HTML template
+        // inladen van een component template
         const template =
             '<ng-container *ngIf="extensionData$ | async as data">' +
             '<div>HTML template retrieved from an external source: Database, static file being hosted...</div>' +
             '<p>This is a binding with data retrieved from the third party: "{{data.helloMessage}}"</p>' +
             '</ng-container>';
 
-        // Create references to module & component
+        // Opbouwen van component & module, opslagen van referenties
         const componentRef = Component({ template })(class { public extensionData$: Observable<object>; });
         const moduleRef = NgModule({ declarations: [componentRef], imports: [CommonModule] })(class { });
 
-        // Build and compile the module and componentent into factories
+        // Exact zoals vorige keren het bouwen van de factories, instantiëren en tonen
         this.compiler.compileModuleAndAllComponentsAsync(moduleRef).then((compiledModule => {
             const module = compiledModule.ngModuleFactory.create(this.injector);
-            const componentFactory = compiledModule.componentFactories[0];
-            const component = componentFactory.create(this.injector, [], null, module);
+            const componentFactory = module.componentFactoryResolver.resolveComponentFactory(componentRef);
+            const component = this.container.createComponent(componentFactory);
 
             component.instance.extensionData$ = this.dataFetcher.getDataFromExternalSource('https://www.externalPart.com/getData');
-            this.container.insert(component.hostView);
         }));
     }
 }
