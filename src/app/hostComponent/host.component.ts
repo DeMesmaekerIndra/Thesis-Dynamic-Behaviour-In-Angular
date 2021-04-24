@@ -1,38 +1,30 @@
-import { AfterViewInit, Component, Injector, NgModuleFactoryLoader, OnInit, SystemJsNgModuleLoader, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, Injector, NgModuleFactoryLoader, SystemJsNgModuleLoader, ViewChild, ViewContainerRef } from '@angular/core';
 import { ExternalComponent } from '../ExternalModules/externalComponent.component';
 
 @Component({
-    templateUrl: './host.component.html',
-    providers: [
-        {
-            provide: NgModuleFactoryLoader,
-            useClass: SystemJsNgModuleLoader
-        }
-    ]
+    templateUrl: './host.component.html'
 })
 export class HostComponent implements AfterViewInit {
-    title = 'TestDynamicImport';
+    // HTML element die als root van de component zal dienen
     @ViewChild('dynamiccomponent', { read: ViewContainerRef }) container: ViewContainerRef;
 
-    constructor(private injector: Injector, private loader: NgModuleFactoryLoader) {
-        console.log('hi');
-    }
+    constructor(private injector: Injector, private loader: SystemJsNgModuleLoader) { }
 
     ngAfterViewInit(): void {
-        // Loads the file
+        // Inladen van het bestand
         this.loader.load('src/app/ExternalModules/external.module#ExternalModule')
-            // Builds and returns a mdoule factoru
+            // Terugkrijgen van een gecompileerde module factory
             .then((moduleFactory) => {
-                // Create an instance of the module and pass the injector to enable dependency injection.
+                // Instantie van module aanmaken, injectory meegeven om depenency injection toe te laten.
                 const module = moduleFactory.create(this.injector);
 
-                // Retrieve a reference to the factory resolver for all components declared on that module
+                // Referentie naar de 'resolver' ophalen die component factories kan vinden
                 const r = module.componentFactoryResolver;
 
-                // Create a component factory for a specific Component
+                // Resolver gebruiken om een component factory te vinden in de gecompileerde module
                 const cmpFactory = r.resolveComponentFactory(ExternalComponent);
 
-                // Create an instance of the component and attach it to the view.
+                // Instantie van component maken een vasthangen aan een parent element.
                 this.container.createComponent(cmpFactory);
             });
     }
