@@ -13,6 +13,7 @@
     "strictFunctionTypes": true,
     "strictNullChecks": true,
     "strictBindCallApply": true,
+    "emitDecoratorMetadata": true,
     "target": "es2015",
     "module": "es2020",
     "lib": [
