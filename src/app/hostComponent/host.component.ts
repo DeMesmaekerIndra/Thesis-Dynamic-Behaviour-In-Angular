@@ -1,4 +1,4 @@
-import { AfterViewInit, Compiler, Component, Inject, Injector, NgModule, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Compiler, Component, Injector, NgModule, ViewChild, ViewContainerRef } from '@angular/core';
 import { ExternalDataFetcherService } from '../services/external-data-fetcher.service';
 import { Observable } from 'rxjs';
 import { CommonModule } from '@angular/common';
@@ -30,7 +30,7 @@ export class HostComponent implements AfterViewInit {
             const componentFactory = compiledModule.componentFactories[0];
             const component = componentFactory.create(this.injector, [], null, module);
 
-            component.instance.extensionData$ = this.dataFetcher.getDataFromExternalApiWebhook('https://www.externalPart.com/getData');
+            component.instance.extensionData$ = this.dataFetcher.getDataFromExternalSource('https://www.externalPart.com/getData');
             this.container.insert(component.hostView);
         }));
 

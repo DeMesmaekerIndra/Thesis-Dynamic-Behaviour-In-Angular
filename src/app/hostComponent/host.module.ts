@@ -1,4 +1,4 @@
-import { Compiler, CompilerFactory, COMPILER_OPTIONS, NgModule } from '@angular/core';
+import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HostComponent } from './host.component';
 import { HostRoutingModule } from './host-routing.module';
