@@ -17,7 +17,7 @@ export class HostComponent implements AfterViewInit {
         const template =
             '<ng-container *ngIf="extensionData$ | async as data">' +
             '<div>HTML template retrieved from an external source: Database, static file being hosted...</div>' +
-            '<p>This is a binding with data retrieved from the third party {{data.helloMessage}}</p>' +
+            '<p>This is a binding with data retrieved from the third party: "{{data.helloMessage}}"</p>' +
             '</ng-container>';
 
         // Create references to module & component
@@ -33,7 +33,5 @@ export class HostComponent implements AfterViewInit {
             component.instance.extensionData$ = this.dataFetcher.getDataFromExternalSource('https://www.externalPart.com/getData');
             this.container.insert(component.hostView);
         }));
-
     }
-
 }
