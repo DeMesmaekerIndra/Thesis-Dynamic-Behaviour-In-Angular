@@ -5,26 +5,26 @@ import { ExternalComponent } from '../ExternalModules/externalComponent.componen
     templateUrl: './host.component.html'
 })
 export class HostComponent implements AfterViewInit {
-    title = 'TestDynamicImport';
+    // HTML element dat als root van de component zal dienen
     @ViewChild('dynamiccomponent', { read: ViewContainerRef }) container: ViewContainerRef;
 
-    constructor(private injector: Injector, private compiler: Compiler) {
-        console.log('hi');
-    }
+    constructor(private injector: Injector, private compiler: Compiler) { }
 
     ngAfterViewInit(): void {
-        // Loads the file
+        // Inladen van het module bestand
         import('../ExternalModules/external.module')
-            // Builds and returns a mdoule factoru
+            // Terugkrijgen van een referentie naar de module klasse
             .then(moduleClassRef =>
+                // Het compileren van de module klasse naar zijn factories
                 this.compiler.compileModuleAndAllComponentsAsync(moduleClassRef.ExternalModule).then((compiledModule => {
+                    // Module instantie maken met factory, injector meegeven om dependency injection toe te laten
                     const module = compiledModule.ngModuleFactory.create(this.injector);
-                    const componentFactory = compiledModule.componentFactories[0];
-                    const component = componentFactory.create(this.injector, [], null, module);
 
-                    this.container.insert(component.hostView);
+                    // Zoeken naar gewenste component factory met de componentFactoryResolver
+                    const componentFactory = module.componentFactoryResolver.resolveComponentFactory(ExternalComponent);
+
+                    // Instantie van component maken en vasthangen aan parent element
+                    this.container.createComponent(componentFactory);
                 })));
-
     }
-
 }
