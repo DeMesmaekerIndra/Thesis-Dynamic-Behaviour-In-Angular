@@ -118,5 +118,5 @@
       }
     }
   },
-  "defaultProject": "TestDynamicImport",
+  "defaultProject": "TestDynamicImport"
 }
