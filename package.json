@@ -8,7 +8,7 @@
     "test": "ng test",
     "lint": "ng lint",
     "e2e": "ng e2e",
-    "build:stats": "ng build --stats-json",
+    "build:stats": "ng build --prod --stats-json",
     "analyze": "webpack-bundle-analyzer dist/TestDynamicImport/stats.json"
   },
   "private": true,
