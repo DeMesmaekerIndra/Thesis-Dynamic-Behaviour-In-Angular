@@ -1,5 +1,4 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule, NgModuleFactoryLoader, SystemJsNgModuleLoader } from '@angular/core';
+import { NgModule, SystemJsNgModuleLoader } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HostComponent } from './host.component';
 import { HostRoutingModule } from './host-routing.module';
@@ -11,6 +10,7 @@ import { HostRoutingModule } from './host-routing.module';
     imports: [
         CommonModule,
         HostRoutingModule
-    ]
+    ],
+    providers: [{ provide: SystemJsNgModuleLoader }]
 })
 export class HostModule { }
