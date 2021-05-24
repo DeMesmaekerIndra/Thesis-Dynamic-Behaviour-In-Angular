@@ -5,6 +5,10 @@ const routes: Routes = [
   {
     path: '',
     loadChildren: () => import('../app/hostComponent/host.module').then(m => m.HostModule)
+  },
+  {
+    path: 'testIfDestroyed',
+    loadChildren: () => import('../app/dummy-component/dummy.module').then(m => m.DummyModule)
   }
 ];
 

@@ -5,9 +5,6 @@ import { Observable, of } from 'rxjs';
   providedIn: 'root'
 })
 export class ExternalDataFetcherService {
-
-  constructor() { }
-
   /**
    * A mock function that pretends to fetch externdal data from a webhook and return it as an observable.
    * @returns mock data from the service
