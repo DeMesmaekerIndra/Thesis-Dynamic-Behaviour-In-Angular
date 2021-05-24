@@ -11,6 +11,6 @@ import { HostRoutingModule } from './host-routing.module';
         CommonModule,
         HostRoutingModule
     ],
-    providers: [{ provide: SystemJsNgModuleLoader }]
+    providers: [SystemJsNgModuleLoader]
 })
 export class HostModule { }
