@@ -1,11 +1,11 @@
-import { AfterViewInit, Component, Injector, NgModuleFactoryLoader, SystemJsNgModuleLoader, ViewChild, ViewContainerRef } from '@angular/core';
+import { AfterViewInit, Component, Injector, SystemJsNgModuleLoader, ViewChild, ViewContainerRef } from '@angular/core';
 import { ExternalComponent } from '../ExternalModules/externalComponent.component';
 
 @Component({
     templateUrl: './host.component.html'
 })
 export class HostComponent implements AfterViewInit {
-    // HTML element die als root van de component zal dienen
+    // HTML element die als parent van de dynamische component zal dienen
     @ViewChild('dynamiccomponent', { read: ViewContainerRef }) container: ViewContainerRef;
 
     constructor(private injector: Injector, private loader: SystemJsNgModuleLoader) { }
@@ -15,13 +15,13 @@ export class HostComponent implements AfterViewInit {
         this.loader.load('src/app/ExternalModules/external.module#ExternalModule')
             // Terugkrijgen van een gecompileerde module factory
             .then((moduleFactory) => {
-                // Instantie van module aanmaken, injectory meegeven om depenency injection toe te laten.
+                // Instantie van module aanmaken, dependency Injector meegeven
                 const module = moduleFactory.create(this.injector);
 
-                // Referentie naar de 'resolver' ophalen die component factories kan vinden
+                // Referentie naar het register ophalen die component factories kan vinden
                 const r = module.componentFactoryResolver;
 
-                // Resolver gebruiken om een component factory te vinden in de gecompileerde module
+                // Resolver gebruiken om een component factory te vinden op basis van type
                 const cmpFactory = r.resolveComponentFactory(ExternalComponent);
 
                 // Instantie van component maken een vasthangen aan een parent element.
